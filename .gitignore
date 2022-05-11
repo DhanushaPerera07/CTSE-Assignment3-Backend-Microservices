@@ -1,5 +1,5 @@
 # Excluded
-logs/e-commerce-app-logs.log
+logs/e-commerce-app-logs.*
 
 HELP.md
 target/
