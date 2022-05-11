@@ -24,23 +24,68 @@
 
 package lk.sliit.ecommercejavaproject.service;
 
+import lk.sliit.ecommercejavaproject.dto.ItemDTO;
+import lk.sliit.ecommercejavaproject.dto.OrderDTO;
+import lk.sliit.ecommercejavaproject.dto.OrderDetailDTO;
+import lk.sliit.ecommercejavaproject.entity.Order;
+import lk.sliit.ecommercejavaproject.service.util.mapper.OrderDTOMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
+@Slf4j
 class OrderServiceTest {
 
     @Autowired
+    ApplicationContext context;
+
+    @Autowired
     OrderService orderService;
+
+    @Autowired
+    OrderDTOMapper orderDTOMapper;
 
     @DisplayName("Test MongoDB insert operation")
     @Test
     void insertOrder() {
         assertNotNull(orderService);
+
+        OrderDTO orderDTO = context.getBean(OrderDTO.class);
+        assertNotNull(orderDTO);
+
+        ItemDTO itemDTO = context.getBean(ItemDTO.class);
+        assertNotNull(itemDTO);
+        itemDTO.setItemId("1122");
+        itemDTO.setItemName("Nokia Mobile Phone.");
+        itemDTO.setUnitPrice(new BigDecimal("5540.75"));
+
+        OrderDetailDTO orderDetailDTO = context.getBean(OrderDetailDTO.class);
+        assertNotNull(orderDetailDTO);
+        orderDetailDTO.setItem(itemDTO);
+        orderDetailDTO.setOrderingQuantity(4);
+
+        ArrayList<OrderDetailDTO> newOrderDetailDTOList = (ArrayList<OrderDetailDTO>)
+                context.getBean("newOrderDetailDTOList");
+        assertNotNull(newOrderDetailDTOList);
+        newOrderDetailDTOList.add(orderDetailDTO);
+        assertEquals(1, newOrderDetailDTOList.size());
+
+        orderDTO.setOrderDetailDTOList(newOrderDetailDTOList);
+
+        Order order = orderDTOMapper.getOrder(orderDTO);
+        assertNotNull(order);
+        assertNotNull(order.getZonedDateTime());
+        log.info("Order : " + order);
 //        orderService.insertOrder();
     }
 

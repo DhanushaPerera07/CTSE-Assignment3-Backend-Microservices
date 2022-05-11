@@ -26,20 +26,29 @@ package lk.sliit.ecommercejavaproject.service;
 import lk.sliit.ecommercejavaproject.dto.OrderDTO;
 import lk.sliit.ecommercejavaproject.entity.Order;
 import lk.sliit.ecommercejavaproject.entity.OrderDetail;
+import lk.sliit.ecommercejavaproject.exception.ZonedDateTimeParseException;
 import lk.sliit.ecommercejavaproject.repository.OrderDetailRepository;
 import lk.sliit.ecommercejavaproject.repository.OrderRepository;
 import lk.sliit.ecommercejavaproject.service.util.mapper.OrderDTOMapper;
 import lk.sliit.ecommercejavaproject.service.util.mapper.OrderDetailDTOMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class OrderService implements SuperService {
 
+    @Autowired
+    ApplicationContext context;
 
     @Autowired
     private OrderDTOMapper orderDTOMapper;
@@ -72,6 +81,8 @@ public class OrderService implements SuperService {
         for (OrderDetail orderDetail : orderDetailList) {
             orderDetail.setOrderId(generatedOrderId);
         }
+
+        log.info("insertOrder() Order : " + order);
 
         /* Insert the Order. */
         orderRepository.insert(order);
@@ -113,7 +124,27 @@ public class OrderService implements SuperService {
     }
 
     public List<OrderDTO> getAllOrders() {
-        return orderDTOMapper.getOrderDTOList(orderRepository.findAll());
+        List<Order> orderList = orderRepository.findAll();
+        ArrayList<OrderDTO> orderDTOList = (ArrayList<OrderDTO>) context.getBean("newOrderDTOList");
+
+        for (Order order : orderList) {
+            OrderDTO orderDTO = context.getBean(OrderDTO.class);
+            orderDTO.setId(order.getId());
+            /* Get all the Order-Detail record for given orderID from database. */
+            List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(order.getId());
+            orderDTO.setOrderDetailDTOList(orderDetailDTOMapper.getOrderDetailDTOList(orderDetailList));
+
+            try {
+                /* ZonedDateTime as String ---> ZonedDateTime. */
+                orderDTO.setZonedDateTime(ZonedDateTime.parse(order.getZonedDateTime()));
+            } catch (
+                    DateTimeParseException e) {
+                throw new ZonedDateTimeParseException(null, e);
+            }
+            orderDTOList.add(orderDTO);
+        }
+
+        return orderDTOList;
     }
 
 }

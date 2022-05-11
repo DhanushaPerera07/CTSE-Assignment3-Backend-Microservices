@@ -57,7 +57,7 @@ class OrderDetailServiceTest {
         itemDTO.setItemName("iPhone 100");
         itemDTO.setUnitPrice(new BigDecimal("100"));
 
-        orderDetailDTO.setItemDTO(itemDTO);
+        orderDetailDTO.setItem(itemDTO);
         orderDetailDTO.setOrderingQuantity(1);
 
         orderDetailService.createOrderDetail(orderDetailDTO);

@@ -36,7 +36,7 @@ public abstract class OrderDetailDTOMapper {
 
     /*  -------------------- OrderDetail  -------------------- */
 
-    @Mapping(target = "item", source = "itemDTO")
+    @Mapping(target = "item", source = "item")
     public abstract OrderDetail getOrderDetail(OrderDetailDTO orderDetailDTO);
 
     @InheritInverseConfiguration

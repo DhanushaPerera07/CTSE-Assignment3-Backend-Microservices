@@ -23,6 +23,7 @@
  */
 package lk.sliit.ecommercejavaproject.config;
 
+import lk.sliit.ecommercejavaproject.dto.OrderDTO;
 import lk.sliit.ecommercejavaproject.dto.OrderDetailDTO;
 import lk.sliit.ecommercejavaproject.entity.OrderDetail;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -43,6 +44,12 @@ import java.util.ArrayList;
         "lk.sliit.ecommercejavaproject.service.util.mapper"
 })
 public class AppConfig {
+
+    @Bean(name = {"OrderDTOList", "newOrderDTOList"})
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public ArrayList<OrderDTO> OrderDTOList() {
+        return new ArrayList<OrderDTO>();
+    }
 
     @Bean(name = {"OrderDetailList", "newOrderDetailList"})
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

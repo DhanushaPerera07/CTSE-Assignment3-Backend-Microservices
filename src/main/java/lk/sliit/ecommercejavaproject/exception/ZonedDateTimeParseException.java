@@ -21,21 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package lk.sliit.ecommercejavaproject.repository;
+package lk.sliit.ecommercejavaproject.exception;
 
-import lk.sliit.ecommercejavaproject.entity.OrderDetail;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
+public class ZonedDateTimeParseException extends RuntimeException {
 
-import java.util.List;
+    public ZonedDateTimeParseException() {
+        super();
+    }
 
-public interface OrderDetailRepository extends SuperRepository, MongoRepository<OrderDetail, String> {
+    public ZonedDateTimeParseException(String message) {
+        super(message);
+    }
 
-
-    @Query("{ 'orderId' : ?0}")
-    List<OrderDetail> findByOrderId(Long id);
-
-    @Query("{'orderId' : ?0, 'id' : ?1}")
-    List<OrderDetail> findByIdAndOrderId(Long orderId, Long id);
-
+    public ZonedDateTimeParseException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

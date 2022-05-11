@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
 public class OrderDetailDTO implements SuperDTO {
     private long id;
 
-    private ItemDTO itemDTO;
+    private ItemDTO item;
 
     private int orderingQuantity;
 

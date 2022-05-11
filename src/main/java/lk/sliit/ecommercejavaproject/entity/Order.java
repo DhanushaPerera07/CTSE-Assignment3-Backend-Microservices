@@ -56,8 +56,8 @@ public class Order implements Serializable {
 
 //    List<OrderDetail> orderDetailList;
 
-    @Autowired()
-    @Qualifier("CurrentZonedDateTime")
-    private ZonedDateTime zonedDateTime;
+//    @Autowired()
+//    @Qualifier("CurrentZonedDateTime")
+    private String zonedDateTime;
 
 }

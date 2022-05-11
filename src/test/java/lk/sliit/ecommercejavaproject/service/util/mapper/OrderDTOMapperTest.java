@@ -69,7 +69,7 @@ class OrderDTOMapperTest {
         assertNotNull(orderDetailDTO);
 
         orderDetailDTO.setId(1);
-        orderDetailDTO.setItemDTO(itemDTO);
+        orderDetailDTO.setItem(itemDTO);
         orderDetailDTO.setOrderingQuantity(5);
         orderDetailDTO.setOrderId(orderDTO.getId());
 
