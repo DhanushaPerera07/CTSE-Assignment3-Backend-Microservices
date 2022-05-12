@@ -102,7 +102,10 @@ public class OrderDetailService implements SuperService {
         Query query = new Query();
         query.addCriteria(Criteria.where("orderId").is(orderId));
 //        orderDetailRepository.findAll(query);
-        mongoTemplate.remove(query);
+
+        orderDetailRepository.deleteById(orderId);
+//        mongoTemplate.remove(query);
+        mongoTemplate.remove(query, OrderDetail.class);
     }
 
     public OrderDetailDTO getById(long orderId, long orderDetailId) {
