@@ -29,7 +29,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
-public interface OrderDetailRepository extends SuperRepository, MongoRepository<OrderDetail, String> {
+public interface OrderDetailRepository extends SuperRepository, MongoRepository<OrderDetail, Long> {
 
 
     @Query("{ 'orderId' : ?0}")

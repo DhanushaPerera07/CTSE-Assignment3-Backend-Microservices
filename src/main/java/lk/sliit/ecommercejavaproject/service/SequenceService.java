@@ -25,6 +25,7 @@ package lk.sliit.ecommercejavaproject.service;
 
 import lk.sliit.ecommercejavaproject.entity.Sequence;
 import lk.sliit.ecommercejavaproject.repository.SequenceRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -32,6 +33,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class SequenceService implements SuperService {
 
     @Autowired
@@ -52,6 +54,7 @@ public class SequenceService implements SuperService {
             /* insert a new record. */
             newSequenceRecord.setName(value);
             newSequenceRecord.setSequenceNumber(sequenceNumber);
+            log.info("newSequenceRecord: " + newSequenceRecord);
             mongoTemplate.save(newSequenceRecord); // , "user"
         } else {
             /* increment the ID by 1 and update the record. */

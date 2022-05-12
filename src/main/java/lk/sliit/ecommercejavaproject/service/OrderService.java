@@ -24,6 +24,7 @@
 package lk.sliit.ecommercejavaproject.service;
 
 import lk.sliit.ecommercejavaproject.dto.OrderDTO;
+import lk.sliit.ecommercejavaproject.dto.OrderDetailDTO;
 import lk.sliit.ecommercejavaproject.entity.Order;
 import lk.sliit.ecommercejavaproject.entity.OrderDetail;
 import lk.sliit.ecommercejavaproject.exception.ZonedDateTimeParseException;
@@ -76,18 +77,22 @@ public class OrderService implements SuperService {
         /* Set generated ID to OrderID. */
         order.setId(generatedOrderId);
 
-        List<OrderDetail> orderDetailList = orderDetailDTOMapper.getOrderDetailList(orderDTO.getOrderDetailList());
+        List<OrderDetailDTO> orderDetailDTOList = orderDTO.getOrderDetailList();
 
-        for (OrderDetail orderDetail : orderDetailList) {
-            orderDetail.setOrderId(generatedOrderId);
+        for (OrderDetailDTO orderDetailDTO : orderDetailDTOList) {
+            orderDetailDTO.setOrderId(generatedOrderId);
+            /* Insert the Order-Detail. */
+            orderDetailService.createOrderDetail(orderDetailDTO);
         }
 
-        log.info("insertOrder() Order : " + order);
+//        List<OrderDetail> orderDetailList = orderDetailDTOMapper.getOrderDetailList(orderDetailDTOList);
+
+
+        log.info("insertOrder() Order : " + order + "\n\nOrderDetailList: " +
+                orderDetailDTOMapper.getOrderDetailList(orderDetailDTOList));
 
         /* Insert the Order. */
         orderRepository.insert(order);
-        /* Insert the Order-Detail. */
-        orderDetailRepository.insert(orderDetailList);
 
         return order.getId();
     }

@@ -89,7 +89,7 @@ public class OrderDetailService implements SuperService {
             throw new RecordNotFoundException();
         }
 
-        orderDetailRepository.deleteById(String.valueOf(orderDetailId));
+        orderDetailRepository.deleteById(orderDetailId);
 
 //        if (!isExists(orderDetailId)) {
 //            /* No matching record found for the given ID. */

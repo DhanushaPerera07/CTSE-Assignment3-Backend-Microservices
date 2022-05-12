@@ -75,6 +75,13 @@ public class OrderController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public Long saveOrder(@RequestBody OrderDTO orderDTO) {
+
+        /* OrderDetailList should contain at lease one record. otherwise throw error. */
+        if (orderDTO.getOrderDetailList().isEmpty()) {
+            throw new BadRequestException("\"orderDetailList\" should contain at least one OrderDetail record " +
+                    "in the request body.");
+        }
+
         /* Let's check ZonedDateTime, it should be null. */
         if (orderDTO.getOrderedDateTIme() != null) {
             /* If ZonedDateTime is not null. Then, we prompt an error. */
