@@ -40,6 +40,6 @@ import java.util.List;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class OrderDTO implements SuperDTO {
     private long id;
-    private List<OrderDetailDTO> orderDetailDTOList;
-    private ZonedDateTime zonedDateTime;
+    private List<OrderDetailDTO> orderDetailList;
+    private ZonedDateTime orderedDateTIme;
 }

@@ -76,7 +76,7 @@ public class OrderService implements SuperService {
         /* Set generated ID to OrderID. */
         order.setId(generatedOrderId);
 
-        List<OrderDetail> orderDetailList = orderDetailDTOMapper.getOrderDetailList(orderDTO.getOrderDetailDTOList());
+        List<OrderDetail> orderDetailList = orderDetailDTOMapper.getOrderDetailList(orderDTO.getOrderDetailList());
 
         for (OrderDetail orderDetail : orderDetailList) {
             orderDetail.setOrderId(generatedOrderId);
@@ -93,12 +93,12 @@ public class OrderService implements SuperService {
     }
 
     public boolean isExists(long orderId) {
-        return orderRepository.existsById(String.valueOf(orderId));
+        return orderRepository.existsById(orderId);
     }
 
     public void updateOrder(OrderDTO orderDTO) {
         Order order = orderDTOMapper.getOrder(orderDTO);
-        List<OrderDetail> orderDetailList = orderDetailDTOMapper.getOrderDetailList(orderDTO.getOrderDetailDTOList());
+        List<OrderDetail> orderDetailList = orderDetailDTOMapper.getOrderDetailList(orderDTO.getOrderDetailList());
 
         /* Update order. */
         orderRepository.save(order);
@@ -115,12 +115,18 @@ public class OrderService implements SuperService {
         /* Delete all Order-Detail records under the OrderID. */
         orderDetailService.deleteAllByOrderId(orderId);
         /* Delete order. */
-        orderRepository.deleteById(String.valueOf(orderId));
+        orderRepository.deleteById(orderId);
     }
 
     public OrderDTO getOrderById(long orderId) {
-        Optional<Order> optOrder = orderRepository.findById(String.valueOf(orderId));
-        return orderDTOMapper.getOrderDTO(optOrder.orElse(null));
+        Optional<Order> optOrder = orderRepository.findById(orderId);
+        Order order = optOrder.orElse(null);
+        if (order == null) {
+            return null;
+        }
+        OrderDTO orderDTO = prepareOrderDTO(order);
+        log.info("Order: " + optOrder.orElse(null));
+        return orderDTO;
     }
 
     public List<OrderDTO> getAllOrders() {
@@ -128,23 +134,28 @@ public class OrderService implements SuperService {
         ArrayList<OrderDTO> orderDTOList = (ArrayList<OrderDTO>) context.getBean("newOrderDTOList");
 
         for (Order order : orderList) {
-            OrderDTO orderDTO = context.getBean(OrderDTO.class);
-            orderDTO.setId(order.getId());
-            /* Get all the Order-Detail record for given orderID from database. */
-            List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(order.getId());
-            orderDTO.setOrderDetailDTOList(orderDetailDTOMapper.getOrderDetailDTOList(orderDetailList));
-
-            try {
-                /* ZonedDateTime as String ---> ZonedDateTime. */
-                orderDTO.setZonedDateTime(ZonedDateTime.parse(order.getZonedDateTime()));
-            } catch (
-                    DateTimeParseException e) {
-                throw new ZonedDateTimeParseException(null, e);
-            }
+            OrderDTO orderDTO = prepareOrderDTO(order);
             orderDTOList.add(orderDTO);
         }
 
         return orderDTOList;
+    }
+
+    private OrderDTO prepareOrderDTO(Order order) {
+        OrderDTO orderDTO = context.getBean(OrderDTO.class);
+        orderDTO.setId(order.getId());
+        /* Get all the Order-Detail record for given orderID from database. */
+        List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(order.getId());
+        orderDTO.setOrderDetailList(orderDetailDTOMapper.getOrderDetailDTOList(orderDetailList));
+
+        try {
+            /* ZonedDateTime as String ---> ZonedDateTime. */
+            orderDTO.setOrderedDateTIme(ZonedDateTime.parse(order.getZonedDateTime()));
+        } catch (
+                DateTimeParseException e) {
+            throw new ZonedDateTimeParseException(null, e);
+        }
+        return orderDTO;
     }
 
 }

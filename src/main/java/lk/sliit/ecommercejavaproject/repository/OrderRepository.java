@@ -26,5 +26,5 @@ package lk.sliit.ecommercejavaproject.repository;
 import lk.sliit.ecommercejavaproject.entity.Order;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface OrderRepository extends SuperRepository, MongoRepository<Order, String> {
+public interface OrderRepository extends SuperRepository, MongoRepository<Order, Long> {
 }

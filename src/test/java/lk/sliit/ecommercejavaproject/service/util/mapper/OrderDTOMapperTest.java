@@ -75,12 +75,12 @@ class OrderDTOMapperTest {
 
         orderDetailDTOList.add(orderDetailDTO);
 
-        orderDTO.setOrderDetailDTOList(orderDetailDTOList);
+        orderDTO.setOrderDetailList(orderDetailDTOList);
 
         /* get order. */
         Order order = orderDTOMapper.getOrder(orderDTO);
         assertEquals(orderDTO.getId(), order.getId());
-        assertEquals(1, orderDTO.getOrderDetailDTOList().size());
+        assertEquals(1, orderDTO.getOrderDetailList().size());
 
         System.out.println("************** Order ************");
         System.out.println(order);

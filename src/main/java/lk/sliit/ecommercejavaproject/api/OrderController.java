@@ -76,7 +76,7 @@ public class OrderController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public Long saveOrder(@RequestBody OrderDTO orderDTO) {
         /* Let's check ZonedDateTime, it should be null. */
-        if (orderDTO.getZonedDateTime() != null) {
+        if (orderDTO.getOrderedDateTIme() != null) {
             /* If ZonedDateTime is not null. Then, we prompt an error. */
             throw new BadRequestException("\"zonedDateTime\" should not be set in the request body.");
         }

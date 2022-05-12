@@ -80,7 +80,7 @@ class OrderServiceTest {
         newOrderDetailDTOList.add(orderDetailDTO);
         assertEquals(1, newOrderDetailDTOList.size());
 
-        orderDTO.setOrderDetailDTOList(newOrderDetailDTOList);
+        orderDTO.setOrderDetailList(newOrderDetailDTOList);
 
         Order order = orderDTOMapper.getOrder(orderDTO);
         assertNotNull(order);

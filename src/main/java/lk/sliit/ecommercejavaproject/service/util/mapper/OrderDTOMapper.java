@@ -47,7 +47,7 @@ public abstract class OrderDTOMapper {
 
     //    @Mapping(target = "id", source = "id")
 //    @InheritInverseConfiguration
-    @Mapping(target = "zonedDateTime", source = "zonedDateTime")
+    @Mapping(target = "orderedDateTIme", source = "zonedDateTime")
     public abstract OrderDTO getOrderDTO(Order order);
 
     public abstract List<OrderDTO> getOrderDTOList(List<Order> orderList);
@@ -60,7 +60,7 @@ public abstract class OrderDTOMapper {
      */
     @Named(value = "toMapZonedDateTime")
     public ZonedDateTime mapDTOZdtToEntityZdt(OrderDTO orderDTO) {
-        ZonedDateTime zonedDateTimeValue = orderDTO.getZonedDateTime();
+        ZonedDateTime zonedDateTimeValue = orderDTO.getOrderedDateTIme();
         if (zonedDateTimeValue == null) {
             /* If zonedDateTimeValue is empty, we deal with an order insertion operation.
             Hence, we need to set the CurrentZonedDateTime */
@@ -72,7 +72,7 @@ public abstract class OrderDTOMapper {
 
     @Named(value = "toGetZonedDateTimeAsString")
     public String getZonedDateTimeAsString(OrderDTO orderDTO) {
-        ZonedDateTime zonedDateTimeValue = orderDTO.getZonedDateTime();
+        ZonedDateTime zonedDateTimeValue = orderDTO.getOrderedDateTIme();
         if (zonedDateTimeValue == null) {
             /* If zonedDateTimeValue is empty, we deal with an order insertion operation.
             Hence, we need to set the CurrentZonedDateTime */
