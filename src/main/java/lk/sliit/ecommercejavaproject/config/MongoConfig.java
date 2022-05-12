@@ -27,8 +27,10 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -38,17 +40,39 @@ import java.util.Collections;
 @Configuration
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
-    private static final String MONGODB_URL = "mongodb+srv://sliit-student:sliit-student@cluster0.d3yl2.mongodb.net/e-commerce-app?retryWrites=true&w=majority";
+    private static final String MONGODB_DATABASE_URL = "mongodb.database.url";
+    private static final String MONGODB_DATABASE_NAME = "mongodb.database.name";
+
+    private static final String MONGODB_BASE_PACKAGE = "lk.sliit.ecommercejavaproject";
+
+    @Autowired
+    private Environment env;
+
+    private String getMongodbURL() {
+        String mongodbDatabaseUrl = env.getProperty(MONGODB_DATABASE_URL);
+        if (mongodbDatabaseUrl == null || mongodbDatabaseUrl.isEmpty()) {
+            throw new RuntimeException("mongodb.database.url property is not set or invalid.");
+        }
+        return mongodbDatabaseUrl;
+    }
+
+    private String getMongodbDatabaseName() {
+        String mongodbDatabaseName = env.getProperty(MONGODB_DATABASE_NAME);
+        if (mongodbDatabaseName == null || mongodbDatabaseName.isEmpty()) {
+            throw new RuntimeException(MONGODB_DATABASE_NAME + " property is not set or invalid.");
+        }
+        return mongodbDatabaseName;
+    }
 
     @Override
     protected String getDatabaseName() {
-        return "e-commerce-app";
+        return getMongodbDatabaseName();
     }
 
     @Override
     public MongoClient mongoClient() {
         //  "mongodb://localhost:27017/test"
-        ConnectionString connectionString = new ConnectionString(MONGODB_URL);
+        ConnectionString connectionString = new ConnectionString(getMongodbURL());
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
@@ -58,7 +82,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     public Collection getMappingBasePackages() {
-        return Collections.singleton("lk.sliit.ecommercejavaproject");
+        return Collections.singleton(MONGODB_BASE_PACKAGE);
     }
 
     @Bean
