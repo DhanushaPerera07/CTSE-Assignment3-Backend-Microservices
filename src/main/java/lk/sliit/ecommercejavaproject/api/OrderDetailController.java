@@ -133,6 +133,10 @@ public class OrderDetailController {
 
     private void checkForOrderRecord(long orderId) {
         /* If no Order record found. Prompt an error. */
-        if (orderService.getOrderById(orderId) == null) throw new RecordNotFoundException();
+//        if (orderService.getOrderById(orderId) == null) throw new RecordNotFoundException();
+        if (!orderService.isExists(orderId)) {
+            /* No matching record found for the given ID. */
+            throw new RecordNotFoundException("Order record not found for ID: " + orderId);
+        }
     }
 }

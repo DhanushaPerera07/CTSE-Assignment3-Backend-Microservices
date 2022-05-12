@@ -27,6 +27,7 @@ import lk.sliit.ecommercejavaproject.dto.OrderDTO;
 import lk.sliit.ecommercejavaproject.dto.OrderDetailDTO;
 import lk.sliit.ecommercejavaproject.entity.Order;
 import lk.sliit.ecommercejavaproject.entity.OrderDetail;
+import lk.sliit.ecommercejavaproject.exception.RecordNotFoundException;
 import lk.sliit.ecommercejavaproject.exception.ZonedDateTimeParseException;
 import lk.sliit.ecommercejavaproject.repository.OrderDetailRepository;
 import lk.sliit.ecommercejavaproject.repository.OrderRepository;
@@ -41,7 +42,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -114,7 +114,7 @@ public class OrderService implements SuperService {
     public void deleteOrderById(long orderId) {
         if (!isExists(orderId)) {
             /* No matching record found for the given ID. */
-            throw new NoSuchElementException("Order record not found for ID: " + orderId);
+            throw new RecordNotFoundException("Order record not found for ID: " + orderId);
         }
 
         /* Delete all Order-Detail records under the OrderID. */

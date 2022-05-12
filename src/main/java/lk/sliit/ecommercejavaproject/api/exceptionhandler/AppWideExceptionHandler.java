@@ -31,10 +31,11 @@ public class AppWideExceptionHandler {
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = {RecordNotFoundException.class})
     public String recordNotFoundException(RuntimeException exception) {
-        log.info(((exception.getMessage() == null || exception.getMessage().isEmpty())
+        String errorMessage = ((exception.getMessage() == null || exception.getMessage().isEmpty())
                 ? NO_RECORDS_FOUND : "Record not found: " +
-                exception.getMessage()));
-        return NO_RECORDS_FOUND;
+                exception.getMessage());
+        log.info(errorMessage);
+        return errorMessage;
     }
 
 //    @ResponseStatus(code = HttpStatus.NOT_FOUND)

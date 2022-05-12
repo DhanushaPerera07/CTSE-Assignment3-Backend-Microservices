@@ -68,7 +68,6 @@ public class OrderDetailService implements SuperService {
                 Query.query(Criteria.where("orderId").is(orderId).and("id").is(orderDetailId)),
                 OrderDetail.class);
 
-//        return orderDetailRepository.existsById(String.valueOf(orderDetailId));
         return (orderDetail != null);
     }
 
@@ -86,31 +85,22 @@ public class OrderDetailService implements SuperService {
     public void deleteOrderDetail(long orderId, long orderDetailId) {
         if (!isExists(orderId, orderDetailId)) {
             /* No matching record found for the given ID. */
-            throw new RecordNotFoundException();
+            throw new RecordNotFoundException("OrderDetailID: " + orderDetailId +
+                    " record not found for OrderID: " + orderId);
         }
 
         orderDetailRepository.deleteById(orderDetailId);
-
-//        if (!isExists(orderDetailId)) {
-//            /* No matching record found for the given ID. */
-//            throw new NoSuchElementException("OrderDetail record not found");
-//        }
-//        orderDetailRepository.deleteById(String.valueOf(orderDetailId));
     }
 
     public void deleteAllByOrderId(long orderId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("orderId").is(orderId));
-//        orderDetailRepository.findAll(query);
 
         orderDetailRepository.deleteById(orderId);
-//        mongoTemplate.remove(query);
         mongoTemplate.remove(query, OrderDetail.class);
     }
 
     public OrderDetailDTO getById(long orderId, long orderDetailId) {
-//        Optional<OrderDetail> optOrderDetail = orderDetailRepository.findById(String.valueOf(orderDetailId));
-//        return optOrderDetail.orElse(null);
         List<OrderDetail> orderDetails = orderDetailRepository.findByIdAndOrderId(orderId, orderDetailId);
         return (orderDetails.isEmpty()) ? null : orderDetailDTOMapper.getOrderDetailDTO(orderDetails.get(0));
     }
