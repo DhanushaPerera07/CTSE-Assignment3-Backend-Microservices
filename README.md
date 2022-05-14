@@ -28,3 +28,10 @@ docker run --rm -p 8080:8080 --name e-commerce-app-container e-commerce-app-back
 ```console
 docker exec -it e-commerce-app-container /bin/sh
 ```
+
+4. Push the docker image to the dockerhub repository.
+
+```console
+docker tag e-commerce-app-backend:v1.0.0 dhanushaperera07/e-commerce-app-backend:v1.0.0
+docker push dhanushaperera07/e-commerce-app-backend:v1.0.0
+```
