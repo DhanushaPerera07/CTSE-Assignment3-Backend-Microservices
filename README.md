@@ -20,8 +20,7 @@ docker build -t e-commerce-app-backend:v1.0.0 .
 2. To run create and run the container.
 
 ```console
-docker run -p 8080:8080 --name e-commerce-app-container e-commerce-app-backen
-d:v1.0.0
+docker run --rm -p 8080:8080 --name e-commerce-app-container e-commerce-app-backend:v1.0.0
 ```
 
 3. To see the container's stuffs.
