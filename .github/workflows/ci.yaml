@@ -45,7 +45,7 @@ jobs:
       with:
         image: dhanushaperera07/e-commerce-app-backend
         registry: docker.io
-        tags: v1, latest
+        tags: latest
         addLatest: true
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
