@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+  e-commerce-app-java-backend:
+    build: .
+    image: dhanushaperera07/e-commerce-app-backend:v1.0.1
+    ports:
+      - "8080:8080"
