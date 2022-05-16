@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: my-e-commerce-backend-java
-          image: dhanushaperera07/e-commerce-app-backend:v1.0.1
+          image: dhanushaperera07/e-commerce-app-backend:latest
           ports:
             - containerPort: 8080
           env:
@@ -39,7 +39,7 @@ kind: Service
 metadata:
   name: e-commerce-backend-java-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: e-commerce-app
   ports:
@@ -47,4 +47,3 @@ spec:
       protocol: TCP
       port: 8080
       targetPort: 8080
-      nodePort: 31000
